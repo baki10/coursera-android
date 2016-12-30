@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">DailySelfie</string>
+    <string name="selfie_imageView_description">Image View description</string>
+    <string name="selfie_name_string">selfie_20170101_000000</string>
+
+    <string name="action_take_picture">Snap Photo</string>
+    <string name="action_disable_alarm">Stop alarms</string>
+    <string name="action_enable_alarm">Start alarms</string>
+</resources>
