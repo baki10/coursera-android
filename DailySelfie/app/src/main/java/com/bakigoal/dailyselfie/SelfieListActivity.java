@@ -166,7 +166,10 @@ public class SelfieListActivity extends AppCompatActivity
         selfie.setPath(imagePath);
 
         Log.i(TAG, "creating thumb bitmap");
-        Bitmap fullSized = FileManager.getBitmapFromFile(imagePath);
+        Bitmap fullSized = FileManager.correctOrientedBitmap(imagePath);
+        if(fullSized == null){
+          return;
+        }
         Float aspectRatio = ((float) fullSized.getHeight()) / (float) fullSized.getWidth();
         Bitmap thumb = Bitmap.createScaledBitmap(
             fullSized,

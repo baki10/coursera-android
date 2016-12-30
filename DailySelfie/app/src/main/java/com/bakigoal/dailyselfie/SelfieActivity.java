@@ -60,7 +60,10 @@ public class SelfieActivity extends AppCompatActivity {
     }
 
     private Bitmap scaleImage(String selfiePath) {
-      Bitmap bm = FileManager.getBitmapFromFile(selfiePath);
+      Bitmap bm = FileManager.correctOrientedBitmap(selfiePath);
+      if(bm == null){
+        return null;
+      }
       int nh = (int) (bm.getHeight() * (1024.0 / bm.getWidth()));
       return Bitmap.createScaledBitmap(bm, 1024, nh, true);
     }
