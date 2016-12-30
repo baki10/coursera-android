@@ -55,7 +55,7 @@ public class SelfieActivity extends AppCompatActivity {
     @Override
     protected void onPostExecute(Bitmap result) {
       imageView.setImageBitmap(result);
-      progressBar.setVisibility(ProgressBar.INVISIBLE);
+      progressBar.setVisibility(ProgressBar.GONE);
       super.onPostExecute(result);
     }
 

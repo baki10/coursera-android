@@ -26,7 +26,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".SelfieActivity" />
+        <activity android:name=".SelfieActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 
 </manifest>
