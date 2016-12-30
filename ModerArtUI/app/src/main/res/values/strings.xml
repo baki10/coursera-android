@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ModerArtUI</string>
+    <string name="action_more_information">More information</string>
+    <string name="dialog_text">Here goes some text</string>
+    <string name="dialog_visit">Visit MOMA</string>
+    <string name="dialog_not_now">Not Now</string>
+    <string name="open_with">Open with</string>
+</resources>
