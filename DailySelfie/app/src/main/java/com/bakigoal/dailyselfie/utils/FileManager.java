@@ -16,35 +16,6 @@ import java.util.Locale;
 
 public class FileManager {
 
-  private static final String APP_DIR = "DailySelfie/Selfies";
-  private static String appImageStoragePath;
-
-  /**
-   * Creates and set the application storage path for the selfies
-   *
-   * @param context the context of the application
-   */
-  public static void initStoragePath(Context context) {
-    if (!externalStorageMounted()) {
-      return;
-    }
-
-    try {
-      File externalFilesDir = context.getExternalFilesDir(null);
-      if (externalFilesDir == null) {
-        return;
-      }
-      String root = externalFilesDir.getCanonicalPath();
-      File bitmapStorageDir = new File(root, FileManager.APP_DIR);
-      boolean mkdirs = bitmapStorageDir.mkdirs();
-      if (mkdirs) {
-        appImageStoragePath = bitmapStorageDir.getCanonicalPath();
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
   /**
    * Read a bitmap from a file
    *
@@ -105,15 +76,18 @@ public class FileManager {
    * @return the filename
    * @throws IOException
    */
-  public static File createImageFile() throws IOException {
+  public static File createImageFile(Context context) throws IOException {
     // Create an image file name
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
     String timeStamp = dateFormat.format(Calendar.getInstance().getTime());
     String imageFileName = "selfie_" + timeStamp;
 
-    File image = new File(appImageStoragePath + "/" + imageFileName + ".jpg");
-    image.createNewFile();
+    File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
-    return image;
+    return File.createTempFile(
+        imageFileName,  /* prefix */
+        ".jpg",         /* suffix */
+        storageDir      /* directory */
+    );
   }
 }

@@ -33,7 +33,6 @@ public class SelfieCursorAdapter extends CursorAdapter {
     this.context = context;
     selfieList = new ArrayList<>();
     bitmaps = new HashMap<>();
-    FileManager.initStoragePath(context);
     Log.d(TAG, "Adapter created");
   }
 

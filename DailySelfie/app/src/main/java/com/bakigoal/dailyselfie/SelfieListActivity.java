@@ -1,7 +1,6 @@
 package com.bakigoal.dailyselfie;
 
 import android.app.AlarmManager;
-import android.app.ListActivity;
 import android.app.LoaderManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -122,17 +121,20 @@ public class SelfieListActivity extends AppCompatActivity
     switch (item.getItemId()) {
       case R.id.action_picture:
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
         if (cameraIntent.resolveActivity(getPackageManager()) != null) {
           File imageFile = null;
           try {
             Log.i(TAG, "creating temp file");
-            imageFile = FileManager.createImageFile();
+            // Create the File where the photo should go
+            imageFile = FileManager.createImageFile(SelfieListActivity.this);
             imagePath = imageFile.getAbsolutePath();
             Log.d(TAG, "temp file stored at : " + imagePath);
           } catch (IOException e) {
 
             Log.w(TAG, "unable to create image file", e);
           }
+          // Continue only if the File was successfully created
           if (imageFile != null) {
             Log.i(TAG, "starting camera intent to take selfie");
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
