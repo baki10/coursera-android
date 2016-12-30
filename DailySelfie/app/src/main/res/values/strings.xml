@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DailySelfie</string>
+    <string name="app_name">Daily Selfie</string>
     <string name="selfie_imageView_description">Image View description</string>
     <string name="selfie_name_string">selfie_20170101_000000</string>
 

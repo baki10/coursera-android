@@ -16,10 +16,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 
@@ -31,7 +33,8 @@ import com.bakigoal.dailyselfie.utils.FileManager;
 import java.io.File;
 import java.io.IOException;
 
-public class SelfieListActivity extends ListActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class SelfieListActivity extends AppCompatActivity
+    implements LoaderManager.LoaderCallbacks<Cursor> {
 
   private static final String TAG = "SelfieListActivity";
   private static final String SELFIE_KEY = "selfiePath";
@@ -48,17 +51,40 @@ public class SelfieListActivity extends ListActivity implements LoaderManager.Lo
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
     if (savedInstanceState != null) {
       imagePath = savedInstanceState.getString(SELFIE_KEY);
       Log.d(TAG, "restored selfieImagePath = " + imagePath);
     }
+    setContentView(R.layout.activity_selfie_list);
+
+    ListView listView = (ListView) findViewById(R.id.list_view);
 
     cursorAdapter = new SelfieCursorAdapter(this);
-    getListView().setAdapter(cursorAdapter);
+    listView.setAdapter(cursorAdapter);
+
+    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override
+      public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        onListItemClick(i);
+      }
+    });
+
     getLoaderManager().initLoader(0, null, this);
 
     sharedPreferences = getSharedPreferences("selfie", Context.MODE_PRIVATE);
     setAlarm(null, false);
+  }
+
+  private void onListItemClick(int position) {
+    Log.d(TAG, "click on item at position " + position);
+    Selfie selfie = (Selfie) cursorAdapter.getItem(position);
+    Log.d(TAG, "fetched item " + selfie.getName() + ", path:" + imagePath);
+    Intent intent = new Intent(this, SelfieActivity.class);
+    intent.putExtra(SelfieActivity.EXTRA_NAME, selfie.getName());
+    intent.putExtra(SelfieActivity.EXTRA_PATH, selfie.getPath());
+    Log.i(TAG, "opening fullscreen activity");
+    startActivity(intent);
   }
 
   @Override
@@ -81,19 +107,6 @@ public class SelfieListActivity extends ListActivity implements LoaderManager.Lo
     super.onSaveInstanceState(outState);
     Log.d(TAG, "configuration is changing, saving instance state");
     outState.putString(SELFIE_KEY, imagePath);
-  }
-
-  @Override
-  protected void onListItemClick(ListView l, View v, int position, long id) {
-    super.onListItemClick(l, v, position, id);
-    Log.d(TAG, "click on item at position " + position);
-    Selfie selfie = (Selfie) cursorAdapter.getItem(position);
-    Log.d(TAG, "fetched item " + selfie.getName() + ", path:" + imagePath);
-    Intent intent = new Intent(this, SelfieActivity.class);
-    intent.putExtra(SelfieActivity.EXTRA_NAME, selfie.getName());
-    intent.putExtra(SelfieActivity.EXTRA_PATH, selfie.getPath());
-    Log.i(TAG, "opening fullscreen activity");
-    startActivity(intent);
   }
 
   @Override

@@ -27,8 +27,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         PendingIntent.FLAG_UPDATE_CURRENT);
     NotificationManager notificationManager = (NotificationManager) context.getSystemService(Service.NOTIFICATION_SERVICE);
     Notification notification = new Notification.Builder(context.getApplicationContext())
-        .setContentTitle("DailySelfie")
-        .setContentText("Take your daily selfie")
+        .setContentTitle("Daily Selfie")
+        .setContentText("Time for another selfie")
         .setSmallIcon(android.R.drawable.ic_menu_camera)
         .setTicker("selfie time!")
         .setContentIntent(pendingIntent)
