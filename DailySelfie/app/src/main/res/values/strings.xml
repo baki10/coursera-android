@@ -6,4 +6,5 @@
     <string name="action_take_picture">Snap Photo</string>
     <string name="action_disable_alarm">Stop alarms</string>
     <string name="action_enable_alarm">Start alarms</string>
+    <string name="action_delete_all_selfies">Delete All</string>
 </resources>

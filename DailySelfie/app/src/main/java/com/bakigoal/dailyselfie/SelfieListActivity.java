@@ -21,7 +21,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.CursorAdapter;
 import android.widget.ListView;
 
 import com.bakigoal.dailyselfie.model.Selfie;
@@ -42,7 +41,7 @@ public class SelfieListActivity extends AppCompatActivity
   private static final long REPEAT_DELAY = 2 * 60 * 1000;
   private static final String ALARM_KEY = "alarms";
 
-  private CursorAdapter cursorAdapter;
+  private SelfieCursorAdapter cursorAdapter;
   private String imagePath;
   private SharedPreferences sharedPreferences;
   private PendingIntent alarmPendingIntent;
@@ -71,7 +70,7 @@ public class SelfieListActivity extends AppCompatActivity
     listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
       @Override
       public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-        ((SelfieCursorAdapter) cursorAdapter).removeSelfie(i);
+        cursorAdapter.removeSelfie(i);
         return true;
       }
     });
@@ -84,7 +83,7 @@ public class SelfieListActivity extends AppCompatActivity
 
   private void onListItemClick(int position) {
     Log.d(TAG, "click on item at position " + position);
-    Selfie selfie = (Selfie) cursorAdapter.getItem(position);
+    Selfie selfie = cursorAdapter.getItem(position);
     Log.d(TAG, "fetched item " + selfie.getName() + ", path:" + imagePath);
     Intent intent = new Intent(this, SelfieActivity.class);
     intent.putExtra(SelfieActivity.EXTRA_NAME, selfie.getName());
@@ -153,6 +152,8 @@ public class SelfieListActivity extends AppCompatActivity
         Log.d(TAG, "click on toggle alarm");
         setAlarm(item, true);
         return true;
+      case R.id.action_delete_all_selfies:
+        cursorAdapter.removeAllSelfies();
     }
 
     return super.onOptionsItemSelected(item);
@@ -195,7 +196,7 @@ public class SelfieListActivity extends AppCompatActivity
         imagePath = null;
 
         Log.i(TAG, "adding selfie to adapter");
-        ((SelfieCursorAdapter) cursorAdapter).addSelfie(selfie);
+        cursorAdapter.addSelfie(selfie);
       }
     }
 

@@ -71,7 +71,7 @@ public class SelfieCursorAdapter extends CursorAdapter {
   }
 
   @Override
-  public Object getItem(int position) {
+  public Selfie getItem(int position) {
     return selfieList.get(position);
   }
 
@@ -106,6 +106,20 @@ public class SelfieCursorAdapter extends CursorAdapter {
   public void removeSelfie(int position) {
     Selfie selfie = (Selfie) getItem(position);
     selfieList.remove(position);
-    context.getContentResolver().delete(DbConstants.SELFIE_URI, String.valueOf(selfie.getId()), null);
+    removeSelfies(new String[]{String.valueOf(selfie.getId())});
+  }
+
+  public void removeAllSelfies() {
+    String[] ids = new String[selfieList.size()];
+    for (int i = 0; i < selfieList.size(); i++) {
+      Selfie selfie = selfieList.get(i);
+      ids[i] = String.valueOf(selfie.getId());
+    }
+    selfieList.clear();
+    removeSelfies(ids);
+  }
+
+  private void removeSelfies(String[] ids) {
+    context.getContentResolver().delete(DbConstants.SELFIE_URI, DbConstants.SELFIE_COLUMN_ID, ids);
   }
 }
