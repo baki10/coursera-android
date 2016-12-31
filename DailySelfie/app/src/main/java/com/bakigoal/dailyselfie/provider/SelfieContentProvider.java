@@ -20,7 +20,13 @@ public class SelfieContentProvider extends ContentProvider {
   }
 
   @Override
-  public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
+  public int delete(@NonNull Uri uri, String id, String[] selectionArgs) {
+    dbHelper.getWritableDatabase().delete(DbConstants.SELFIE_TABLE_NAME,
+        DbConstants.SELFIE_COLUMN_ID + "=" + id, selectionArgs);
+    if (getContext() != null) {
+
+      getContext().getContentResolver().notifyChange(uri, null);
+    }
     return 0;
   }
 

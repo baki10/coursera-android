@@ -68,6 +68,13 @@ public class SelfieListActivity extends AppCompatActivity
         onListItemClick(i);
       }
     });
+    listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+      @Override
+      public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+        ((SelfieCursorAdapter) cursorAdapter).removeSelfie(i);
+        return true;
+      }
+    });
 
     getLoaderManager().initLoader(0, null, this);
 

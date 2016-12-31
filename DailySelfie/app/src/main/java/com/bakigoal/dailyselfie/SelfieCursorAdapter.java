@@ -102,4 +102,10 @@ public class SelfieCursorAdapter extends CursorAdapter {
 
     context.getContentResolver().insert(DbConstants.SELFIE_URI, values);
   }
+
+  public void removeSelfie(int position) {
+    Selfie selfie = (Selfie) getItem(position);
+    selfieList.remove(position);
+    context.getContentResolver().delete(DbConstants.SELFIE_URI, String.valueOf(selfie.getId()), null);
+  }
 }
