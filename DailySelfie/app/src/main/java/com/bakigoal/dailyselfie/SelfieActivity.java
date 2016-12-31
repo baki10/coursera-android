@@ -1,11 +1,15 @@
 package com.bakigoal.dailyselfie;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Display;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -61,11 +65,16 @@ public class SelfieActivity extends AppCompatActivity {
 
     private Bitmap scaleImage(String selfiePath) {
       Bitmap bm = FileManager.correctOrientedBitmap(selfiePath);
-      if(bm == null){
+      if (bm == null) {
         return null;
       }
-      int nh = (int) (bm.getHeight() * (1024.0 / bm.getWidth()));
-      return Bitmap.createScaledBitmap(bm, 1024, nh, true);
+      WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+      Display display = wm.getDefaultDisplay();
+      Point size = new Point();
+      display.getSize(size);
+      int width = size.x;
+      int nh = (int) (bm.getHeight() * ((1f * width) / bm.getWidth()));
+      return Bitmap.createScaledBitmap(bm, width, nh, true);
     }
   }
 }
